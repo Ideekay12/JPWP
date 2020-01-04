@@ -20,6 +20,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -38,8 +39,6 @@ public class Main extends Application {
     double myszx, speed, falling1, falling2;
     int zlapano, sekundy=60;
     Rectangle kosz, pasek;
-    Circle piorko, kowadlo;
-    Jablko jablko = new jablko();
     List drop = new ArrayList();
     Pane polegry = new Pane();
     Timer timer = new Timer();
@@ -62,46 +61,18 @@ public class Main extends Application {
     Button button4 = new Button("Wyjscie");
     Button button5 = new Button("Powrot do menu");
 
-    //wgrywanie fotek i czcionek
-
-    Image image = new Image(String.valueOf(Main.class.getResource("foto.jpg")));
-    BackgroundSize backgroundSize = new BackgroundSize(100, 100, true, true, true, false);
-    BackgroundImage backgroundImage = new BackgroundImage(image, BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
-    Background background = new Background(backgroundImage);
-
-    Image image2 = new Image(String.valueOf(Main.class.getResource("kosz.png")));
-    ImagePattern imagePattern = new ImagePattern(image2);
-
-    Image image3 = new Image(String.valueOf(Main.class.getResource("backmenu.jpg")));
-    BackgroundSize backgroundSize1 = new BackgroundSize(100, 100, true, true, true, true);
-    BackgroundImage backgroundmenu = new BackgroundImage(image3, BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize1);
-    Background background1 = new Background(backgroundmenu);
-
-    Image img = new Image("file:jablko.png");
-    ImagePattern imagePattern2 = new ImagePattern(img);
-
-    String currentFontFile = "deflore.ttf";
-    InputStream fontStream = Main.class.getResourceAsStream(currentFontFile);
-    Font bgFont = Font.loadFont(fontStream, 50);
 
     public void start(Stage stage){
 
         kosz = rectangle();
         pasek = rectangle2();
-        piorko = piorko();
         timer.scheduleAtFixedRate(timertask, 1000, 1000);
 
         VBox menu1 = new VBox(25);
         menu1.setAlignment(Pos.CENTER);
         menu1.getChildren().addAll(label, button1, button2, button3, button4);
-        menu1.setBackground(background1);
-
-        label.setFont(bgFont);
-        kosz.setFill(imagePattern);
-        jablko.setFill(imagePattern2);
-
         polegry.getChildren().addAll(kosz, pasek, button5, label1, label2);
-        polegry.setBackground(background);
+
 
         Scene menu = new Scene(menu1, 600, 400);
         Scene gra = new Scene(polegry, 400, 600);
@@ -110,7 +81,7 @@ public class Main extends Application {
             myszx = e.getX();
         });
 
-        button1.setOnAction(e -> {stage.setScene(gra); sekundy=60; });
+        button1.setOnAction(e -> {stage.setScene(gra); sekundy=60; zlapano=0;});
         button4.setOnAction(e -> stage.close());
         button5.setOnAction(e -> {stage.setScene(menu);});
 
@@ -225,11 +196,12 @@ public class Main extends Application {
     }
 
 
-    public Circle piorko() {
-        Circle piorko = new Circle();
+    public Ellipse piorko() {
+        Ellipse piorko = new Ellipse();
         piorko.setLayoutX(rand(3, 397));
         piorko.setLayoutY(35);
-        piorko.setRadius(10);
+        piorko.setRadiusX(10);
+        piorko.setRadiusY(10);
         piorko.setFill(Color.WHITE);
         return piorko;
     }
